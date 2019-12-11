@@ -1,14 +1,6 @@
 <template>
   <div class="hello" style="background: red">
-    <input v-model="msg" />
-    <button @click="onSubmit">Envoyer</button>
-    <ul>
-      <li v-for="message in messages" :key="message.id">
-        <div>{{ message.dateEtHeure }}</div>
-        <div>{{ message.expediteur }}</div>
-        <div>{{ message.msg }}</div>
-      </li>
-    </ul>
+
   </div>
 </template>
 
@@ -29,7 +21,7 @@ export default {
         id: ++this.id,
         dateEtHeure: new Date(),
         msg,
-        expediteur: 'Fln Slr'
+        expediteur: _.upperFirst('Fln Slr')
       }
       messages.push(message)
       this.msg = ''
