@@ -27,7 +27,7 @@ export default {
   },
   computed: {
     conversation () {
-      return this.conversations[this.id]
+      return _.find(this.conversations, { id: this.id })
     }
   },
   methods: {

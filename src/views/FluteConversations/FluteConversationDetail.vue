@@ -1,6 +1,8 @@
 <template>
   <q-page padding>
-    <form-conversation-detail v-model="conversation" />
+    <form-conversation-detail
+      v-model="conversation"
+      @submit="onSubmit" />
   </q-page>
 </template>
 
@@ -18,6 +20,11 @@ export default {
         participants: [],
         lastMessage: null
       }
+    }
+  },
+  methods: {
+    onSubmit (v) {
+      this.$emit('post-conversation', v)
     }
   }
 }
