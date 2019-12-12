@@ -1,36 +1,45 @@
 <template>
-  <div>
-    <flute-conversation-bottom-bar
-        @submit="onSubmit" />
+  <div v-if="conversation" key="if">
     <flute-conversation-liste
-        :messages="messages" />
+      :messages="conversation.messages" />
+    <flute-conversation-bottom-bar
+      @submit="onSubmit" />
+  </div>
+  <div v-else key="else">
+    Impossible de trouver la conversation
   </div>
 </template>
 
 <script>
+import { uid } from 'quasar'
 import FluteConversationBottomBar from '@/components/FluteConversation/FluteConversationBottomBar'
 import FluteConversationListe from '@/components/FluteConversation/FluteConversationListe'
+import viewConversationMixin from '@/mixins/viewConversationMixin'
 
 export default {
   name: 'FluteConversation',
   components: { FluteConversationListe, FluteConversationBottomBar },
-  data () {
-    return {
-      id: 0,
-      messages: []
+  mixins: [viewConversationMixin],
+  props: {
+    id: {
+      type: [String, Number]
+    }
+  },
+  computed: {
+    conversation () {
+      return this.conversations[this.id]
     }
   },
   methods: {
     onSubmit ({ color, msg }) {
-      const { messages } = this
       const message = {
-        id: ++this.id,
+        id: uid(),
         dateEtHeure: new Date(),
         msg,
         color,
         expediteur: _.upperFirst('Fln Slr')
       }
-      messages.push(message)
+      this.conversation.messages.push(message)
     }
   }
 }

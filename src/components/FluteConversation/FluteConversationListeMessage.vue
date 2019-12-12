@@ -1,9 +1,9 @@
 <template>
-  <li :style="{ color: message.color }">
-    <div>{{ message.dateEtHeure }}</div>
-    <div>{{ message.expediteur }}</div>
-    <pre>{{ message.msg | emoji }}</pre>
-  </li>
+  <q-chat-message
+    :stamp="message.dateEtHeure.toString()"
+    :name="message.expediteur">
+    {{ message.msg | emoji }}
+  </q-chat-message>
 </template>
 
 <script>
