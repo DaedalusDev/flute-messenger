@@ -63,6 +63,9 @@
             <q-btn type="submit"
                    label="Connexion"
                    color="primary" />
+            <q-btn label="Connexion pas belle"
+                   color="warning"
+                   @click="logInPasBeau" />
           </q-card-actions>
         </q-form>
       </q-card>
@@ -73,6 +76,7 @@
 <script>
 import routes from '@/router/routes'
 import { createNamespacedHelpers } from 'vuex'
+import { USER_LOG_IN } from '@/store/user/action-types'
 
 const storeUser = createNamespacedHelpers('user')
 
@@ -96,8 +100,29 @@ export default {
     // }
   },
   methods: {
-    logIn () {
-      console.log(this.username)
+    ...storeUser.mapActions({
+      userLogIn: USER_LOG_IN
+    }),
+    async logInPasBeau () {
+      const { username } = this
+      try {
+        // Pas beau
+        await this.$store.dispatch(
+          `user/${USER_LOG_IN}`,
+          { username }
+        )
+      } catch (e) {
+        console.error(e)
+      }
+    },
+    async logIn () {
+      const { username } = this
+      try {
+        // Beaucoup mieux
+        await this.userLogIn({ username })
+      } catch (e) {
+        console.error(e)
+      }
     }
   }
 }
