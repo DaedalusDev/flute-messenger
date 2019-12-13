@@ -8,6 +8,11 @@
 
 <script>
 import FormConversationDetail from '@/components/forms/FormConversationDetail'
+import { createNamespacedHelpers } from 'vuex'
+import { CONVERSATIONS_POST_CONVERSATION } from '@/store/conversations/action-types'
+import { errorWrapper } from '@/utils/network'
+
+const storeConversations = createNamespacedHelpers('conversations')
 
 export default {
   name: 'FluteConversationDetail',
@@ -15,16 +20,22 @@ export default {
   data () {
     return {
       conversation: {
-        id: null,
         libelle: '',
-        participants: [],
-        lastMessage: null
+        participants: []
       }
     }
   },
   methods: {
+    ...storeConversations.mapActions({
+      postConversation: CONVERSATIONS_POST_CONVERSATION
+    }),
     onSubmit (v) {
-      this.$emit('post-conversation', v)
+      errorWrapper(async () => {
+        await this.postConversation(v)
+        this.$q.$notify({
+          message: 'Génial !'
+        })
+      })
     }
   }
 }

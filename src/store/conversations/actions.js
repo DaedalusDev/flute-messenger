@@ -13,5 +13,22 @@ export default {
     } catch (e) {
       throw new Error('Échec de la récupération des conversations')
     }
-  }
+  },
+  [actionTypes.CONVERSATIONS_POST_CONVERSATION]:
+    async ({ commit }, conversation) => {
+      try {
+        const r = await network.post(
+          'conversation',
+          JSON.stringify(conversation)
+        )
+        commit(
+          conversation.id
+            ? mutationTypes.CONVERSATIONS_UPDATE_CONVERSATION
+            : mutationTypes.CONVERSATIONS_ADD_CONVERSATION,
+          r.data
+        )
+      } catch (e) {
+        throw Error(`Impossible d'insérer ou mettre à jour la conversation`)
+      }
+    }
 }

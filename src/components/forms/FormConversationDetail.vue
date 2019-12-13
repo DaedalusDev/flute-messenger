@@ -9,6 +9,7 @@
       multiple
       use-chips
       map-options
+      emit-value
       url-prefix="user"
       :rules="[ val => val && val.length > 0 || 'Merci de saisir un participant']"
     />
