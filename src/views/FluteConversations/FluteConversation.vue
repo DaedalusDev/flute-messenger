@@ -15,6 +15,9 @@ import { uid } from 'quasar'
 import FluteConversationBottomBar from '@/components/FluteConversation/FluteConversationBottomBar'
 import FluteConversationListe from '@/components/FluteConversation/FluteConversationListe'
 import viewConversationMixin from '@/mixins/viewConversationMixin'
+import { createNamespacedHelpers } from 'vuex'
+
+const storeUser = createNamespacedHelpers('user')
 
 export default {
   name: 'FluteConversation',
@@ -26,6 +29,9 @@ export default {
     }
   },
   computed: {
+    ...storeUser.mapState({
+      utilisateur: 'utilisateur'
+    }),
     conversation () {
       return _.find(this.conversations, { id: this.id })
     }
@@ -37,7 +43,7 @@ export default {
         dateEtHeure: new Date(),
         msg,
         color,
-        expediteur: _.upperFirst('Fln Slr')
+        expediteur: _.upperFirst(this.utilisateur.username)
       }
       this.conversation.messages.push(message)
     }

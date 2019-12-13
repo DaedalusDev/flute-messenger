@@ -1,5 +1,5 @@
 <template>
-  <q-layout v-if="utilisateur.id"
+  <q-layout v-if="isOnline"
             key="logged"
             view="lHh Lpr lFf">
     <q-header elevated class="glossy">
@@ -14,10 +14,10 @@
         />
 
         <q-toolbar-title>
-          Quasar App
+          Flute messenger
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <div>{{ utilisateur.username }}</div>
       </q-toolbar>
     </q-header>
 
@@ -48,7 +48,7 @@
   </q-layout>
   <q-layout v-else
             view="lHh Lpr lFf" key="pas-logged">
-    <q-dialog :value="!utilisateur.id" persistent>
+    <q-dialog :value="!isOnline" persistent>
       <q-card>
         <q-form @validation-success="logIn">
           <q-card-section class="text-h6">Connexion</q-card-section>
@@ -93,11 +93,14 @@ export default {
     // ...storeUser.mapState(['utilisateur']),
     ...storeUser.mapState({
       utilisateur: 'utilisateur'
-    })
+    }),
     // ,
     // utilisateurPasBeau () {
     //   return this.$store.state.user.utilisateur
     // }
+    ...storeUser.mapGetters({
+      isOnline: 'estConnecte'
+    })
   },
   methods: {
     ...storeUser.mapActions({
