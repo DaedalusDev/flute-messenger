@@ -32,7 +32,7 @@ export default {
     onSubmit (v) {
       errorWrapper(async () => {
         await this.postConversation(v)
-        this.$q.$notify({
+        this.$q.notify({
           message: 'Génial !'
         })
       })
