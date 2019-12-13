@@ -1,5 +1,7 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout v-if="utilisateur.id"
+            key="logged"
+            view="lHh Lpr lFf">
     <q-header elevated class="glossy">
       <q-toolbar>
         <q-btn
@@ -44,17 +46,58 @@
       <router-view />
     </q-page-container>
   </q-layout>
+  <q-layout v-else
+            view="lHh Lpr lFf" key="pas-logged">
+    <q-dialog :value="!utilisateur.id" persistent>
+      <q-card>
+        <q-form @validation-success="logIn">
+          <q-card-section class="text-h6">Connexion</q-card-section>
+          <q-card-section>
+            <q-input v-model="username"
+                     label="Nom d'utilisateur"
+                     :rules="[
+                       (v) => v !== '' || 'Ce champ est obligatoire'
+                     ]" />
+          </q-card-section>
+          <q-card-actions>
+            <q-btn type="submit"
+                   label="Connexion"
+                   color="primary" />
+          </q-card-actions>
+        </q-form>
+      </q-card>
+    </q-dialog>
+  </q-layout>
 </template>
 
 <script>
 import routes from '@/router/routes'
+import { createNamespacedHelpers } from 'vuex'
+
+const storeUser = createNamespacedHelpers('user')
 
 export default {
   name: 'LayoutDefault',
   routes: routes.filter((r) => r.meta),
   data () {
     return {
+      username: '',
       leftDrawerOpen: false
+    }
+  },
+  computed: {
+    // ...storeUser.mapState(['utilisateur']),
+    ...storeUser.mapState({
+      utilisateur: 'utilisateur'
+    })
+    // ,
+    // utilisateurPasBeau () {
+    //   return this.$store.state.user.utilisateur
+    // }
+  },
+  methods: {
+    logIn () {
+      console.log(this.username)
     }
   }
 }
